@@ -238,6 +238,7 @@ define([
 
 				// Single value widget (checkbox, radio, or plain <input> type widget)
 				var value = widget.get('value');
+				var prev = lang.getObject(name, false, obj);
 
 				// Store widget's value(s) as a scalar, except for checkboxes which are automatically arrays
 				if(typeof widget.checked == 'boolean'){
@@ -247,33 +248,40 @@ define([
 							lang.setObject(name, value, obj);
 						}else{
 							// give radio widgets a default of null
-							value = lang.getObject(name, false, obj);
-							if(value === undefined){
+							if(prev === undefined){
 								lang.setObject(name, null, obj);
 							}
 						}
 					}else{
 						// checkbox/toggle button
-						var ary=lang.getObject(name, false, obj);
-						if(!ary){
-							ary=[];
+						if(prev === undefined){
+							// give checkbox/toggle button a default of null
+							lang.setObject(name, value!==false ? value : null, obj);
+						}else if(!lang.isArray(prev)){
+							// this is the second checkbox/toggle button in the group 
+							// and an array should be returned
+							var ary = [];
+							if(prev !== null){
+								ary.push(prev);
+							}
+							if(value !== false){
+								ary.push(value);
+							}
 							lang.setObject(name, ary, obj);
-						}
-						if(value !== false){
-							ary.push(value);
+						}else if(value !== false){
+							prev.push(value);
 						}
 					}
 				}else{
-					var prev=lang.getObject(name, false, obj);
-					if(typeof prev != "undefined"){
+					if(prev === undefined){
+						// unique name
+						lang.setObject(name, value, obj);
+					}else{
 						if(lang.isArray(prev)){
 							prev.push(value);
 						}else{
 							lang.setObject(name, [prev, value], obj);
 						}
-					}else{
-						// unique name
-						lang.setObject(name, value, obj);
 					}
 				}
 			});

@@ -74,6 +74,7 @@
 							available: {from: d("2005-01-02"), to: d("2006-01-02")},
 							plop: {combo: "one"},
 							cb: ["2", "3"],
+							cbs: "1",
 							r: "2",
 							ms1: ["VA", "WA"],
 							s1: "VA",
@@ -93,6 +94,7 @@
 							available: {from: d("2005-11-02"), to: d("2006-11-02")},
 							plop: {combo: "three"},
 							cb: ["4"],
+							cbs: null,
 							r: "1",
 							ms1: ["FL", "CA"],
 							s1: "FL",
@@ -127,10 +129,11 @@
 					runTest: function(){
 						var queried=dojo.query("input[checked]");
 						doh.t(queried.length>0,"dojo.query could not find checked widgets.");
-						doh.is(3,queried.length,"expected: 3 checked widgets, got: "+queried.length);
+						doh.is(4,queried.length,"expected: 4 checked widgets, got: "+queried.length);
 						doh.is(dojo.byId('cb_2'),queried[0],"Expected 2nd checkbox.");
 						doh.is(dojo.byId('cb_3'),queried[1],"Expected 3rd checkbox.");
-						doh.is(dojo.byId('r_2'),queried[2],"Expected 2nd radio button.");
+						doh.is(dojo.byId('cbs_1'),queried[2],"Expected checkbox(single).");
+						doh.is(dojo.byId('r_2'),queried[3],"Expected 2nd radio button.");
 					}
 				}
 			]);
@@ -754,6 +757,14 @@
 					</td>
 				</tr>
 
+				<tr>
+					<td>CheckBox widget(single)</td>
+					<td>cbs</td>
+					<td>
+						<input data-dojo-type="dijit/form/CheckBox" id="cbs_1" name="cbs" value="1" checked/> <label for="cbs_1">1</label>
+					</td>
+				</tr>
+				
 				<!--
 				<tr>
 					<td>radio</td>
